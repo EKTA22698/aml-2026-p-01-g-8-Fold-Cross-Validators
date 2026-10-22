@@ -1,0 +1,25 @@
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated processed data
+data/processed/*
+!data/processed/.gitkeep
+
+# Do not ignore original dataset files in data/raw/
+# hour.csv and day.csv must be committed
