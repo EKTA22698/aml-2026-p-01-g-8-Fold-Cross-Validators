@@ -1,4 +1,3 @@
-# aml-2026-p01-g1
 # Applied Machine Learning Project
 
 ## Team Name
