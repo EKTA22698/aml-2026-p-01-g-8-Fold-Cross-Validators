@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 from feature_engineering import (
@@ -7,9 +8,8 @@ from feature_engineering import (
 )
 
 
-def main():
-
-    df = pd.DataFrame({
+def sample_data():
+    return pd.DataFrame({
         "season": [1, 2, 3, 4],
         "yr": [0, 0, 1, 1],
         "mnth": [1, 4, 8, 12],
@@ -27,39 +27,32 @@ def main():
         "cnt": [60, 80, 100, 120]
     })
 
-    encoded = add_cyclic_features(df)
 
-    assert "hr_sin" in encoded.columns
-    assert "hr_cos" in encoded.columns
-    assert "mnth_sin" in encoded.columns
-    assert "mnth_cos" in encoded.columns
-    assert "weekday_sin" in encoded.columns
-    assert "weekday_cos" in encoded.columns
+def test_cyclic_features():
+    encoded = add_cyclic_features(sample_data())
 
-    print("PASS: Cyclic encoding.")
+    for column in [
+        "hr_sin", "hr_cos",
+        "mnth_sin", "mnth_cos",
+        "weekday_sin", "weekday_cos"
+    ]:
+        assert column in encoded.columns
 
-   
-    X, y = prepare_features(df)
+
+def test_target_leakage_prevention():
+    X, y = prepare_features(sample_data())
 
     assert "cnt" not in X.columns
     assert "casual" not in X.columns
     assert "registered" not in X.columns
+    assert len(y) == 4
 
-    print("PASS: Target leakage prevention.")
 
+def test_preprocessing_pipeline():
+    X, y = prepare_features(sample_data())
 
     preprocessor = build_preprocessor(X)
-
     transformed = preprocessor.fit_transform(X)
 
-    assert transformed.shape[0] == len(df)
-
-    print("PASS: Preprocessing pipeline.")
-    print("Input shape:", X.shape)
-    print("Output shape:", transformed.shape)
-
-    print("\nAll tests completed successfully!")
-
-
-if __name__ == "__main__":
-    main()
+    assert transformed.shape[0] == len(X)
+    assert transformed.shape[1] > 0

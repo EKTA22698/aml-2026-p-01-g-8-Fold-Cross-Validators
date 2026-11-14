@@ -67,7 +67,7 @@ def add_cyclic_features(df):
             2 * np.pi * values / period
         )
 
-        result.drop(columns=[column], inplace=True)
+        result = result.drop(columns=[column])
 
     return result
 
